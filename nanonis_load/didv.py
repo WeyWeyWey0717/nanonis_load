@@ -1154,7 +1154,7 @@ class Colorplot(interactive_colorplot.Colorplot):
         lpts_gate = []
         pairs = []
         mod_pairs = []
-        for idx in range(self.data.shape[1]):
+        for idx in range(self.data.shape[0 if self.transpose else 1]):
             smoothed = gaussian_filter1d(self.data[:, idx], sigma)
             maxargs = argrelextrema(smoothed, np.greater)[0]
             for maxarg in maxargs:
@@ -1997,7 +1997,6 @@ def batch_load(
         for idx, file_number in enumerate(file_range):
             filename = basename + "%0*d" % (5, file_number) + ".dat"
             if filename in file_exist:
-                print(f"Loading {filename}")
                 if cache is not None:
                     if filename in file_list:  # Maybe use a set
                         continue
@@ -2600,7 +2599,6 @@ class LineCutGateSweep:
 
         self.ax.set_ylabel("Bias (mV)")
         self.fig.colorbar(self.im)
-        
 
     @property
     def bias_lower(self):
@@ -3452,4 +3450,3 @@ def quick_landau_fan(
         normalize=normalize,
     )
     return fan
-
